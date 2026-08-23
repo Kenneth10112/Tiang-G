@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>Tiang-G — E-BaGsakan</title>
+<meta name="theme-color" content="#0070E0" />
+<meta name="description" content="Tiang-G: sari-sari sourcing for negosyantes." />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icons/favicon-32.png" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Tiang-G" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="phone">
+  <div class="app" id="app">
+
+    <!-- ============ BAGSAKAN (HOME) ============ -->
+    <section class="view" data-view="bagsakan" id="view-bagsakan">
+      <header class="topbar">
+        <div class="brandrow">
+          <div class="wordmark"><span class="w-tiang">Tiang</span><span class="w-g">G</span></div>
+          <button class="iconbtn bell" aria-label="Notifications">🔔</button>
+        </div>
+        <div class="greetrow">
+          <div class="avatar-shop">🌸</div>
+          <div>
+            <p class="hello">Kumusta, negosyante!</p>
+            <p class="shopname">Aling Rosa's Flower Shop</p>
+          </div>
+        </div>
+        <div class="searchbar">
+          <span class="searchicon">⌕</span>
+          <input type="text" placeholder="Search Bagsakan materials..." disabled />
+        </div>
+      </header>
+
+      <div class="scroll">
+        <button class="pickforme" id="btn-pick-for-me">
+          <span class="pfm-icon">✨</span>
+          <span class="pfm-text">
+            <strong>Pick for me</strong>
+            <small>Curate Bagsakan for my shop</small>
+          </span>
+          <span class="pfm-arrow">→</span>
+        </button>
+
+        <div class="gabai-banner" id="gabai-banner" hidden>
+          <div class="gabai-avatar">G</div>
+          <div class="gabai-bubble">
+            <p class="gabai-label">GAB AI</p>
+            <p class="gabai-text">Found materials that might help you create your products! Sorted by store reputation, top sellers first. 🌿</p>
+          </div>
+        </div>
+
+        <div class="sectionhead">
+          <h2 id="grid-title">Trending sa Bagsakan</h2>
+          <span class="sectionhint" id="grid-hint">unsorted</span>
+        </div>
+
+        <div class="grid" id="item-grid"></div>
+      </div>
+    </section>
+
+    <!-- ============ CHAT ============ -->
+    <section class="view" data-view="chat" id="view-chat">
+      <header class="topbar chat-topbar">
+        <button class="iconbtn back" id="chat-back" aria-label="Back">←</button>
+        <div class="chat-seller">
+          <div class="seller-avatar" id="chat-seller-avatar">🧵</div>
+          <div>
+            <p class="seller-name" id="chat-seller-name">Nena's Craft Supplies</p>
+            <p class="seller-status">● Online now</p>
+          </div>
+        </div>
+      </header>
+
+      <div class="chat-context-chip" id="chat-context-chip">Re: Fuzzy Floral Wire</div>
+
+      <div class="scroll chat-scroll" id="chat-log">
+        <!-- GABAI suggestion + messages injected here -->
+      </div>
+
+      <div class="chat-inputbar">
+        <input type="text" placeholder="Message will be sent by GAB AI…" disabled />
+        <button class="sendbtn" disabled>➤</button>
+      </div>
+    </section>
+
+    <!-- ============ CHECKOUT ============ -->
+    <section class="view" data-view="checkout" id="view-checkout">
+      <header class="topbar chat-topbar">
+        <button class="iconbtn back" id="checkout-back" aria-label="Back">←</button>
+        <p class="pagetitle">Review &amp; Pay</p>
+      </header>
+
+      <div class="scroll">
+        <div class="card offer-summary">
+          <p class="card-eyebrow">Seller offer</p>
+          <div class="offer-row">
+            <div class="offer-thumb" id="co-thumb">🧵</div>
+            <div class="offer-info">
+              <p class="offer-item" id="co-item">Fuzzy Floral Wire — 100 rolls</p>
+              <p class="offer-seller" id="co-seller">from Nena's Craft Supplies</p>
+            </div>
+            <p class="offer-price" id="co-price">₱2,500</p>
+          </div>
+          <div class="offer-note" id="co-note">Pick-up available at Divisoria stall 14</div>
+        </div>
+
+        <p class="card-eyebrow section-space">Pay with</p>
+        <div class="paymethods" id="paymethods">
+          <label class="paymethod selected" data-pay="wallet">
+            <input type="radio" name="pay" checked />
+            <span class="pay-icon pay-gcash">G</span>
+            <span class="pay-copy">
+              <strong>GCash Wallet</strong>
+              <small>Balance ₱8,450.00</small>
+            </span>
+            <span class="pay-check">✓</span>
+          </label>
+          <label class="paymethod" data-pay="gloan">
+            <input type="radio" name="pay" />
+            <span class="pay-icon pay-loan">₱</span>
+            <span class="pay-copy">
+              <strong>GLoan</strong>
+              <small>For bigger bulk-stock orders</small>
+            </span>
+            <span class="pay-check">✓</span>
+          </label>
+          <label class="paymethod" data-pay="ggives">
+            <input type="radio" name="pay" />
+            <span class="pay-icon pay-gives">%</span>
+            <span class="pay-copy">
+              <strong>GGives</strong>
+              <small>Flexible supplier payment terms</small>
+            </span>
+            <span class="pay-check">✓</span>
+          </label>
+        </div>
+
+        <div class="insure-card">
+          <div class="insure-copy">
+            <p class="insure-title">🛡️ GInsure Transit</p>
+            <p class="insure-sub">Protect this delivery for ₱10</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="insure-toggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="totals">
+          <div class="totals-row"><span>Subtotal</span><span id="tot-subtotal">₱2,500.00</span></div>
+          <div class="totals-row" id="tot-insure-row"><span>GInsure Transit</span><span id="tot-insure">₱10.00</span></div>
+          <div class="totals-row totals-grand"><span>Total</span><span id="tot-grand">₱2,510.00</span></div>
+        </div>
+      </div>
+
+      <div class="checkoutbar">
+        <button class="placeorder" id="btn-place-order">Place Order · <span id="place-order-total">₱2,510.00</span></button>
+      </div>
+    </section>
+
+    <!-- ============ WALLET ============ -->
+    <section class="view" data-view="wallet" id="view-wallet">
+      <header class="topbar">
+        <div class="brandrow">
+          <p class="pagetitle">Wallet</p>
+        </div>
+      </header>
+      <div class="scroll">
+        <div class="balance-card">
+          <p class="balance-label">GCash Balance</p>
+          <p class="balance-amount">₱8,450.00</p>
+          <div class="balance-actions">
+            <div class="balance-action">💵<span>Cash In</span></div>
+            <div class="balance-action">📤<span>Send</span></div>
+            <div class="balance-action">🏦<span>GLoan</span></div>
+            <div class="balance-action">🛡️<span>GInsure</span></div>
+          </div>
+        </div>
+
+        <div class="sectionhead"><h2>Recent activity</h2></div>
+        <div class="activity-list" id="activity-list"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============ BOTTOM NAV ============ -->
+  <nav class="bottomnav" id="bottomnav">
+    <button class="navitem active" data-target="bagsakan">
+      <span class="navicon">🧺</span><span>Bagsakan</span>
+    </button>
+    <button class="navitem" data-target="wallet">
+      <span class="navicon">💳</span><span>Wallet</span>
+    </button>
+    <button class="navitem" data-target="chat">
+      <span class="navicon">💬</span><span>Chat</span>
+    </button>
+  </nav>
+
+  <!-- ============ SUCCESS MODAL ============ -->
+  <div class="modal-backdrop" id="success-modal" hidden>
+    <div class="modal-card">
+      <div class="check-wrap"><div class="checkmark">✓</div></div>
+      <h3 id="success-title">Order Placed &amp; Protected!</h3>
+      <p class="success-sub" id="success-sub">Nena's Craft Supplies has been notified. Track this order anytime in Chat.</p>
+      <div class="success-orderid">Order #<span id="order-id">TG-20482</span></div>
+      <button class="backhome" id="btn-back-home">Back to Bagsakan</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
