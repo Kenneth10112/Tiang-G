@@ -46,18 +46,77 @@
     views.forEach(v => v.classList.toggle("active", v.dataset.view === name));
     navitems.forEach(n => n.classList.toggle("active", n.dataset.target === name));
     bottomnav.style.display = (name === "checkout") ? "none" : "flex";
+    gabaiFloat.el.classList.toggle("hidden", name === "checkout");
+    gabaiFloat.setForView(name);
   }
 
   navitems.forEach(btn => {
     btn.addEventListener("click", () => showView(btn.dataset.target));
   });
 
+  /* ---------------- GAB AI FLOATING GUIDE ---------------- */
+
+  const gabaiFloat = (() => {
+    const el = document.getElementById("gabai-float");
+    const avatar = document.getElementById("gabai-float-avatar");
+    const bubbleEl = document.getElementById("gabai-float-bubble");
+    const textEl = document.getElementById("gabai-float-text");
+    const actionsEl = document.getElementById("gabai-float-actions");
+    const closeBtn = document.getElementById("gabai-float-close");
+
+    const VIEW_TIPS = {
+      bagsakan: { text: "Tap <strong>Pick for me</strong> and I'll curate Bagsakan for your shop! 🌸", actions: [] },
+      chat: { text: "I suggested a message above — tap <strong>Use this message</strong> to send it instantly.", actions: [] },
+      wallet: { text: "Need working capital for your next bulk order? GLoan can help fund it.", actions: [] },
+    };
+
+    let currentView = "bagsakan";
+    let shownOnce = { bagsakan: false };
+
+    function render(text, actions = []) {
+      textEl.innerHTML = text;
+      actionsEl.innerHTML = "";
+      actions.forEach(a => {
+        const btn = document.createElement("button");
+        btn.className = a.primary ? "gfa-primary" : "gfa-ghost";
+        btn.textContent = a.label;
+        btn.addEventListener("click", a.onClick);
+        actionsEl.appendChild(btn);
+      });
+    }
+
+    function open(text, actions) {
+      if (text) render(text, actions);
+      bubbleEl.hidden = false;
+    }
+    function close() { bubbleEl.hidden = true; }
+    function toggle() {
+      if (bubbleEl.hidden) {
+        const tip = VIEW_TIPS[currentView];
+        open(tip ? tip.text : "Hi! I'm GAB AI, your Bagsakan buddy. 👋");
+      } else {
+        close();
+      }
+    }
+    function setForView(name) {
+      currentView = name;
+      if (name === "bagsakan" && !shownOnce.bagsakan) {
+        shownOnce.bagsakan = true;
+        setTimeout(() => open(VIEW_TIPS.bagsakan.text), 700);
+      }
+    }
+
+    avatar.addEventListener("click", toggle);
+    closeBtn.addEventListener("click", close);
+
+    return { el, open, close, setForView };
+  })();
+
   /* ---------------- BAGSAKAN GRID ---------------- */
 
   const grid = document.getElementById("item-grid");
   const gridTitle = document.getElementById("grid-title");
   const gridHint = document.getElementById("grid-hint");
-  const gabaiBanner = document.getElementById("gabai-banner");
   const pickBtn = document.getElementById("btn-pick-for-me");
 
   function renderGrid(items, { sorted }) {
@@ -100,10 +159,18 @@
       const sorted = [...FLORAL_ITEMS].sort((a, b) => b.rating - a.rating || b.reviews - a.reviews);
       renderGrid(sorted, { sorted: true });
       gridTitle.textContent = "Picked for your Flower Shop";
-      gabaiBanner.hidden = false;
       pickBtn.classList.remove("busy");
       pickBtn.querySelector(".pfm-text strong").textContent = "Picked for your shop ✓";
       pickBtn.querySelector(".pfm-text small").textContent = "Tap to re-curate Bagsakan";
+
+      gabaiFloat.open(
+        "Found the best-priced floral wire! Want me to check seller ratings? ⭐",
+        [{
+          label: "Check seller ratings",
+          primary: true,
+          onClick: () => gabaiFloat.open("Nena's Craft Supplies leads with 4.8★ from 612 reviews — that's why it's ranked #1 and tagged Top Seller. 🏅")
+        }]
+      );
     }, 1100);
   });
 

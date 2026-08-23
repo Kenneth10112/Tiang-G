@@ -1,18 +1,19 @@
 :root{
-  --navy:#0B1F3A;
-  --navy-soft:#233350;
-  --blue:#0070E0;
-  --blue-deep:#0056B3;
-  --blue-pale:#E7F1FE;
-  --amber:#F2A93C;
-  --amber-deep:#D98A1F;
-  --cream:#FBF6EC;
-  --cream-dim:#F1EADA;
-  --clay:#E85D3D;
-  --green:#1FAA59;
-  --green-pale:#E5F6EC;
-  --line:#E7E0CF;
-  --shadow: 0 10px 24px rgba(11,31,58,0.10);
+  /* GCash-inspired palette: deep + bright brand blue, white/pale-blue surfaces, gold accent */
+  --navy:#001A57;
+  --navy-soft:#0E3B93;
+  --blue:#0072CE;
+  --blue-deep:#001E7A;
+  --blue-pale:#EAF3FF;
+  --amber:#FFC72C;
+  --amber-deep:#E29B00;
+  --cream:#F5F8FF;
+  --cream-dim:#E8F0FE;
+  --clay:#FF5A45;
+  --green:#00A651;
+  --green-pale:#E1F6EA;
+  --line:#DCE7F9;
+  --shadow: 0 10px 24px rgba(0,26,87,0.10);
   --radius-lg:22px;
   --radius-md:16px;
   --radius-sm:11px;
@@ -131,22 +132,60 @@ body{
 .pickforme.busy .pfm-arrow{ animation:spin 0.9s linear infinite; }
 @keyframes spin{ to{ transform:rotate(360deg); } }
 
-/* ---------- GAB AI banner ---------- */
-.gabai-banner{
-  margin-top:14px; display:flex; gap:10px; align-items:flex-start;
-  background:#fff; border:1.5px dashed var(--blue);
-  border-radius:var(--radius-md); padding:12px 14px;
-  animation:pop .35s ease;
-}
 @keyframes pop{ from{ opacity:0; transform:translateY(-6px); } to{ opacity:1; transform:translateY(0); } }
 .gabai-avatar{
   flex-shrink:0; width:30px; height:30px; border-radius:9px;
-  background:linear-gradient(135deg, var(--amber), var(--clay));
+  background:linear-gradient(135deg, var(--blue), var(--blue-deep));
   color:#fff; font-family:'Baloo 2',sans-serif; font-weight:800;
   display:flex; align-items:center; justify-content:center; font-size:14px;
 }
-.gabai-label{ margin:0; font-size:10px; font-weight:800; letter-spacing:0.06em; color:var(--blue); text-transform:uppercase; }
-.gabai-text{ margin:3px 0 0; font-size:13px; line-height:1.4; color:var(--navy-soft); }
+
+/* ---------- GAB AI floating guide ---------- */
+.gabai-float{
+  position:absolute; right:14px; bottom:94px; z-index:30;
+  display:flex; flex-direction:column; align-items:flex-end; gap:10px;
+}
+.gabai-float-avatar{
+  position:relative; width:54px; height:54px; border-radius:50%;
+  background:linear-gradient(135deg, var(--blue), var(--blue-deep));
+  border:none; box-shadow:0 10px 22px rgba(0,30,122,0.38);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.gabai-letter{ font-family:'Baloo 2',sans-serif; font-weight:800; font-size:20px; color:#fff; }
+.gabai-pulse{
+  position:absolute; inset:-6px; border-radius:50%;
+  border:2px solid var(--blue); opacity:0.55;
+  animation:gabai-pulse 2.2s ease-out infinite;
+}
+@keyframes gabai-pulse{
+  0%{ transform:scale(0.85); opacity:0.55; }
+  70%{ transform:scale(1.28); opacity:0; }
+  100%{ opacity:0; }
+}
+.gabai-float-bubble{
+  position:relative; width:224px; background:#fff; border-radius:16px;
+  box-shadow:0 14px 30px rgba(0,26,87,0.22); border:1px solid var(--line);
+  padding:12px 14px 13px; animation:pop .22s ease;
+}
+.gabai-float-bubble::after{
+  content:""; position:absolute; right:20px; bottom:-8px;
+  width:16px; height:16px; background:#fff;
+  border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+  transform:rotate(45deg); border-radius:0 0 4px 0;
+}
+.gabai-float-close{
+  position:absolute; top:8px; right:9px; border:none; background:none;
+  color:#9AA6BB; font-size:11px; cursor:pointer; padding:2px;
+}
+.gabai-float-label{ margin:0 18px 0 0; font-size:10px; font-weight:800; letter-spacing:.06em; color:var(--blue); text-transform:uppercase; }
+.gabai-float-text{ margin:5px 0 0; font-size:12.5px; line-height:1.42; color:var(--navy-soft); }
+.gabai-float-actions{ display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+.gabai-float-actions button{
+  border:none; border-radius:9px; padding:7px 10px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit;
+}
+.gabai-float-actions .gfa-primary{ background:var(--navy); color:#fff; }
+.gabai-float-actions .gfa-ghost{ background:var(--cream-dim); color:var(--navy-soft); }
+.gabai-float.hidden{ display:none; }
 
 /* ---------- section head / grid ---------- */
 .sectionhead{ display:flex; align-items:baseline; justify-content:space-between; margin:20px 2px 10px; }
