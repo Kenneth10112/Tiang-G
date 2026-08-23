@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>Tiang-G × GCash — E-BaGsakan</title>
+<meta name="theme-color" content="#0B63F6" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<style>
+  :root{
+    --blue-900:#062B73;
+    --blue-700:#0A3FA0;
+    --blue-500:#0B63F6;
+    --blue-400:#3B8CFF;
+    --blue-100:#EAF2FF;
+    --blue-50:#F5F9FF;
+    --ink:#0B1A33;
+    --muted:#6B7A90;
+    --line:#E3EBF7;
+    --gold:#FFB020;
+    --green:#16A34A;
+    --white:#FFFFFF;
+    --radius-lg:22px;
+    --radius-md:16px;
+    --radius-sm:10px;
+    --shadow: 0 10px 30px -12px rgba(10,63,160,0.28);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(160deg,#dce9ff 0%, #eef4ff 40%, #f7fafe 100%);
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    padding:24px;
+  }
+  .stage{
+    width:100%;
+    max-width:420px;
+  }
+  .device{
+    position:relative;
+    width:100%;
+    height:860px;
+    max-height:92vh;
+    background:var(--white);
+    border-radius:38px;
+    box-shadow: var(--shadow), 0 0 0 10px #0d1b33;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .notch{
+    position:absolute;
+    top:0; left:50%; transform:translateX(-50%);
+    width:120px; height:22px;
+    background:#0d1b33;
+    border-radius:0 0 16px 16px;
+    z-index:50;
+  }
+  .app{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+    background:var(--blue-50);
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    padding:34px 18px 14px;
+    background: linear-gradient(135deg, var(--blue-700), var(--blue-500) 60%, var(--blue-400));
+    color:var(--white);
+    flex-shrink:0;
+  }
+  .topbar-row{
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{
+    display:flex; align-items:center; gap:9px;
+  }
+  .brand-mark{
+    width:30px; height:30px; border-radius:9px;
+    background: rgba(255,255,255,0.18);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:12px; letter-spacing:0.5px;
+    border:1px solid rgba(255,255,255,0.35);
+  }
+  .brand-text{
+    font-weight:800; font-size:17px; letter-spacing:0.2px;
+  }
+  .brand-sub{
+    font-size:10.5px; opacity:0.85; font-weight:500; margin-top:-2px;
+  }
+  .top-icons{ display:flex; gap:12px; align-items:center; }
+  .icon-btn{
+    width:34px; height:34px; border-radius:50%;
+    background:rgba(255,255,255,0.16);
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid rgba(255,255,255,0.25);
+  }
+  .search-bar{
+    margin-top:16px;
+    background:rgba(255,255,255,0.94);
+    border-radius:14px;
+    padding:11px 14px;
+    display:flex; align-items:center; gap:10px;
+    color:var(--muted);
+    font-size:13.5px;
+    box-shadow: inset 0 0 0 1px rgba(10,63,160,0.06);
+  }
+  .search-bar span{ color:#8592A6; }
+
+  /* ---------- Screens ---------- */
+  .screens{ flex:1; position:relative; min-height:0; }
+  .screen{
+    position:absolute; inset:0;
+    display:none;
+    flex-direction:column;
+    min-height:0;
+  }
+  .screen.active{ display:flex; }
+  .scroll{
+    flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;
+    padding:16px 16px 90px;
+  }
+  .scroll::-webkit-scrollbar{ display:none; }
+
+  /* chips */
+  .chip-row{
+    display:flex; gap:8px; overflow-x:auto; padding:14px 16px 4px;
+    flex-shrink:0;
+  }
+  .chip-row::-webkit-scrollbar{ display:none; }
+  .chip{
+    flex-shrink:0;
+    background:var(--white);
+    border:1px solid var(--line);
+    padding:8px 14px;
+    border-radius:999px;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--blue-700);
+    display:flex; align-items:center; gap:6px;
+    white-space:nowrap;
+  }
+  .chip.active{
+    background: var(--blue-500);
+    color:var(--white);
+    border-color:var(--blue-500);
+  }
+  .chip .dot{ width:6px; height:6px; border-radius:50%; background:var(--gold); }
+
+  .section-label{
+    font-size:12px; font-weight:700; color:var(--muted);
+    text-transform:uppercase; letter-spacing:0.6px;
+    margin:14px 2px 10px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .section-label a{ color:var(--blue-500); font-size:12px; font-weight:700; text-decoration:none; text-transform:none; letter-spacing:0; }
+
+  /* product card */
+  .card{
+    background:var(--white);
+    border-radius:var(--radius-md);
+    border:1px solid var(--line);
+    padding:13px;
+    display:flex;
+    gap:12px;
+    margin-bottom:10px;
+    align-items:flex-start;
+  }
+  .thumb{
+    width:56px; height:56px; border-radius:12px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px;
+  }
+  .thumb.wire{ background:linear-gradient(135deg,#FFE7B0,#FFC24B); }
+  .thumb.floral{ background:linear-gradient(135deg,#FFD3E4,#FF8FB4); }
+  .thumb.twine{ background:linear-gradient(135deg,#CDEBD6,#7ED399); }
+  .card-body{ flex:1; min-width:0; }
+  .card-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+  .card-title{ font-weight:700; font-size:14px; }
+  .card-price{ font-weight:800; font-size:14px; color:var(--blue-700); white-space:nowrap; }
+  .card-seller{ font-size:11.5px; color:var(--muted); margin-top:2px; display:flex; align-items:center; gap:5px; }
+  .badge-top{
+    display:inline-flex; align-items:center; gap:4px;
+    background:#FFF6E5; color:#B4790A;
+    border:1px solid #FFE1A0;
+    font-size:10px; font-weight:800;
+    padding:3px 7px; border-radius:7px;
+    margin-top:6px;
+  }
+  .card-footer{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:9px;
+  }
+  .stars{ font-size:11px; color:#F5A623; font-weight:700; }
+  .btn-msg{
+    font-size:11.5px; font-weight:700; color:var(--white);
+    background:var(--blue-500);
+    padding:6px 11px; border-radius:8px; border:none;
+  }
+
+  /* GAB floating bubble */
+  .gab-wrap{
+    position:absolute; z-index:40;
+    display:flex; align-items:flex-end; gap:8px;
+  }
+  .gab-orb{
+    width:44px; height:44px; border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, #6FE3FF, #0B63F6 65%, #062B73);
+    box-shadow:0 6px 16px rgba(11,99,246,0.45), 0 0 0 4px rgba(255,255,255,0.6);
+    display:flex; align-items:center; justify-content:center;
+    color:white; font-weight:800; font-size:13px;
+    flex-shrink:0;
+    animation: floaty 3.2s ease-in-out infinite;
+  }
+  @keyframes floaty{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-5px); }
+  }
+  .gab-bubble{
+    background:var(--white);
+    border-radius:14px 14px 14px 4px;
+    padding:10px 12px;
+    font-size:12px;
+    line-height:1.35;
+    max-width:220px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .gab-bubble b{ color:var(--blue-700); }
+  .gab-actions{ display:flex; gap:6px; margin-top:8px; }
+  .gab-actions button{
+    font-size:10.5px; font-weight:700;
+    border-radius:7px; padding:5px 9px; border:none;
+  }
+  .gab-actions .primary{ background:var(--blue-500); color:white; }
+  .gab-actions .ghost{ background:var(--blue-100); color:var(--blue-700); }
+  .gab-tag{
+    font-size:9.5px; font-weight:800; color:var(--blue-500);
+    text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px;
+    display:flex; align-items:center; gap:4px;
+  }
+  .home-gab{ top:150px; right:14px; flex-direction:row-reverse; }
+  .home-gab .gab-bubble{ border-radius:14px 14px 4px 14px; }
+
+  /* ---------- Chat screen ---------- */
+  .chat-header{
+    background:var(--white);
+    padding:14px 16px;
+    display:flex; align-items:center; gap:10px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .back-btn{
+    width:30px; height:30px; display:flex; align-items:center; justify-content:center;
+    color:var(--blue-700);
+  }
+  .avatar{
+    width:38px; height:38px; border-radius:50%;
+    background:linear-gradient(135deg,#FFD3E4,#FF8FB4);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; color:#8A1F4A; font-size:14px;
+    position:relative;
+  }
+  .avatar .online{
+    position:absolute; bottom:-1px; right:-1px;
+    width:10px; height:10px; border-radius:50%;
+    background:var(--green); border:2px solid white;
+  }
+  .chat-name{ font-weight:700; font-size:13.5px; display:flex; align-items:center; gap:6px; }
+  .chat-sub{ font-size:11px; color:var(--muted); }
+
+  .chat-scroll{ flex:1; overflow-y:auto; padding:16px 14px 10px; display:flex; flex-direction:column; gap:10px; }
+  .msg{
+    max-width:78%;
+    padding:10px 12px;
+    font-size:13px;
+    line-height:1.4;
+    border-radius:14px;
+  }
+  .msg.them{
+    align-self:flex-start;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-bottom-left-radius:4px;
+  }
+  .msg.me{
+    align-self:flex-end;
+    background:var(--blue-500);
+    color:white;
+    border-bottom-right-radius:4px;
+  }
+  .msg-time{ font-size:9.5px; color:var(--muted); margin-top:3px; }
+  .msg.me + .msg-time{ text-align:right; }
+
+  .gab-suggest{
+    background:var(--blue-100);
+    border:1px dashed var(--blue-400);
+    border-radius:14px;
+    padding:10px 12px;
+    font-size:12px;
+    margin:2px 0 4px;
+  }
+  .gab-suggest .gab-tag{ margin-bottom:5px; }
+
+  .chat-input-row{
+    flex-shrink:0;
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+    background:var(--white);
+    border-top:1px solid var(--line);
+  }
+  .input-pill{
+    display:flex; align-items:center; gap:8px;
+    background:var(--blue-50);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:9px 8px 9px 14px;
+    font-size:12.5px; color:var(--muted);
+    margin-bottom:10px;
+  }
+  .send-dot{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--blue-500); color:white;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .btn-cta{
+    width:100%;
+    background:linear-gradient(135deg, var(--blue-500), var(--blue-700));
+    color:white; font-weight:800; font-size:14.5px;
+    border:none; border-radius:14px; padding:14px;
+    box-shadow:0 8px 18px -6px rgba(11,99,246,0.55);
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+
+  /* ---------- Checkout ---------- */
+  .co-header{
+    background:var(--white); padding:14px 16px; display:flex; align-items:center; gap:10px;
+    border-bottom:1px solid var(--line); font-weight:700; font-size:15px; flex-shrink:0;
+  }
+  .summary-card{
+    background:var(--white); border:1px solid var(--line); border-radius:var(--radius-md);
+    padding:14px; margin-bottom:14px;
+  }
+  .summary-row{ display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:8px; color:var(--muted); }
+  .summary-row.total{ color:var(--ink); font-weight:800; font-size:14px; border-top:1px dashed var(--line); padding-top:10px; margin-top:2px; }
+  .summary-row b{ color:var(--ink); font-weight:600; }
+
+  .pay-option{
+    background:var(--white); border:1.5px solid var(--line); border-radius:var(--radius-md);
+    padding:12px 13px; display:flex; align-items:center; gap:12px; margin-bottom:9px;
+    position:relative;
+  }
+  .pay-option.selected{ border-color:var(--blue-500); background:var(--blue-50); }
+  .pay-icon{
+    width:38px; height:38px; border-radius:10px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:11px;
+  }
+  .pay-icon.wallet{ background:linear-gradient(135deg,#0B63F6,#062B73); }
+  .pay-icon.loan{ background:linear-gradient(135deg,#00C2A8,#008A76); }
+  .pay-icon.gives{ background:linear-gradient(135deg,#7C5CFF,#4B2FCC); }
+  .pay-text{ flex:1; }
+  .pay-title{ font-weight:700; font-size:13px; }
+  .pay-sub{ font-size:11px; color:var(--muted); margin-top:1px; }
+  .radio{
+    width:19px; height:19px; border-radius:50%; border:2px solid var(--line); flex-shrink:0;
+  }
+  .radio.on{ border-color:var(--blue-500); background:radial-gradient(circle, var(--blue-500) 0 40%, white 42%); }
+
+  .insure-card{
+    background:linear-gradient(135deg,#FFF8E9,#FFF1D2);
+    border:1px solid #FFE1A0; border-radius:var(--radius-md);
+    padding:13px; display:flex; align-items:center; gap:12px; margin:6px 0 16px;
+  }
+  .insure-icon{
+    width:36px; height:36px; border-radius:50%; background:#FFB020; color:white;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .toggle{
+    width:40px; height:23px; border-radius:999px; background:var(--line); position:relative; flex-shrink:0;
+    transition:background .2s;
+  }
+  .toggle.on{ background:var(--green); }
+  .toggle-knob{
+    width:18px; height:18px; border-radius:50%; background:white; position:absolute; top:2.5px; left:3px;
+    transition:left .2s; box-shadow:0 1px 3px rgba(0,0,0,0.3);
+  }
+  .toggle.on .toggle-knob{ left:19px; }
+
+  /* success overlay */
+  .success-overlay{
+    position:absolute; inset:0; background:rgba(6,43,115,0.55);
+    display:none; align-items:center; justify-content:center; z-index:80;
+    backdrop-filter: blur(2px);
+  }
+  .success-overlay.show{ display:flex; }
+  .success-card{
+    background:white; border-radius:24px; padding:30px 26px; width:82%; text-align:center;
+    animation: pop .35s cubic-bezier(.2,1.4,.4,1);
+  }
+  @keyframes pop{ from{ transform:scale(.85); opacity:0; } to{ transform:scale(1); opacity:1; } }
+  .check-circle{
+    width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#22c55e,#15803d);
+    margin:0 auto 14px; display:flex; align-items:center; justify-content:center;
+  }
+  .success-title{ font-weight:800; font-size:17px; margin-bottom:4px; }
+  .success-sub{ font-size:12.5px; color:var(--muted); margin-bottom:14px; }
+  .protected-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    background:#EAF9F0; color:var(--green); font-weight:700; font-size:11.5px;
+    padding:6px 12px; border-radius:999px; border:1px solid #C7EFD5;
+  }
+  .success-close{
+    margin-top:18px; width:100%; padding:12px; border-radius:12px; border:none;
+    background:var(--blue-500); color:white; font-weight:700; font-size:13.5px;
+  }
+
+  /* ---------- Bottom Nav ---------- */
+  .bottom-nav{
+    flex-shrink:0;
+    display:flex;
+    background:var(--white);
+    border-top:1px solid var(--line);
+    padding:8px 6px calc(8px + env(safe-area-inset-bottom));
+    z-index:60;
+  }
+  .nav-item{
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+    padding:5px 0; color:var(--muted); font-size:10px; font-weight:700;
+    border:none; background:none;
+  }
+  .nav-item.active{ color:var(--blue-500); }
+  .nav-item svg{ width:21px; height:21px; }
+
+  /* frame label for pitch recording (desktop only) */
+  .frame-tag{
+    position:absolute; top:-34px; left:0; font-size:12px; font-weight:700; color:var(--blue-700);
+    background:white; padding:4px 10px; border-radius:8px; box-shadow:var(--shadow);
+  }
+  @media (max-width:520px){
+    body{ padding:0; background:var(--blue-50); }
+    .device{ height:100vh; max-height:100vh; border-radius:0; box-shadow:none; }
+    .notch{ display:none; }
+    .frame-tag{ display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="frame-tag" id="frameTag">Frame 1 · Discovery</div>
+  <div class="device">
+    <div class="notch"></div>
+    <div class="app">
+
+      <!-- SCREEN 1: DISCOVERY -->
+      <section class="screen active" id="screen-home">
+        <div class="topbar">
+          <div class="topbar-row">
+            <div class="brand">
+              <div class="brand-mark">TG</div>
+              <div>
+                <div class="brand-text">Tiang-G</div>
+                <div class="brand-sub">E-BaGsakan Marketplace</div>
+              </div>
+            </div>
+            <div class="top-icons">
+              <div class="icon-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+              </div>
+              <div class="icon-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="search-bar">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8592A6" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <span>Search "floral wire", sellers…</span>
+          </div>
+        </div>
+
+        <div class="chip-row">
+          <div class="chip active"><span class="dot"></span>Fuzzy Wires</div>
+          <div class="chip">Floral Packaging</div>
+          <div class="chip">Ribbons &amp; Twine</div>
+          <div class="chip">Styro Boxes</div>
+          <div class="chip">Cellophane</div>
+        </div>
+
+        <div class="scroll" style="position:relative; padding-top:6px;">
+          <div class="section-label">Best matches for "floral wire" <a>See all</a></div>
+
+          <div class="card">
+            <div class="thumb wire">🧵</div>
+            <div class="card-body">
+              <div class="card-top">
+                <div class="card-title">22-Gauge Fuzzy Floral Wire (Bundle of 100)</div>
+                <div class="card-price">₱2,500</div>
+              </div>
+              <div class="card-seller">Aling Nena's Floral Supplies · Divisoria</div>
+              <div class="badge-top">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="#B4790A"><path d="M12 2l2.9 6.6L22 9.3l-5 4.9 1.2 7.1L12 17.8l-6.2 3.5L7 14.2 2 9.3l7.1-.7z"/></svg>
+                Top Seller
+              </div>
+              <div class="card-footer">
+                <div class="stars">★★★★★ <span style="color:var(--muted); font-weight:500;">4.9 (312)</span></div>
+                <button class="btn-msg" onclick="goTo('chat')">Message</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="thumb floral">🌸</div>
+            <div class="card-body">
+              <div class="card-top">
+                <div class="card-title">Floral Wrap Packaging Set (50 pcs)</div>
+                <div class="card-price">₱870</div>
+              </div>
+              <div class="card-seller">Blooms &amp; Co. Trading · Quiapo</div>
+              <div class="badge-top">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="#B4790A"><path d="M12 2l2.9 6.6L22 9.3l-5 4.9 1.2 7.1L12 17.8l-6.2 3.5L7 14.2 2 9.3l7.1-.7z"/></svg>
+                Top Seller
+              </div>
+              <div class="card-footer">
+                <div class="stars">★★★★☆ <span style="color:var(--muted); font-weight:500;">4.6 (198)</span></div>
+                <button class="btn-msg" onclick="goTo('chat')">Message</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="thumb twine">🧶</div>
+            <div class="card-body">
+              <div class="card-top">
+                <div class="card-title">Natural Jute Twine 3mm (20m roll)</div>
+                <div class="card-price">₱65</div>
+              </div>
+              <div class="card-seller">Divi Craft Corner · Divisoria</div>
+              <div class="card-footer">
+                <div class="stars">★★★★☆ <span style="color:var(--muted); font-weight:500;">4.4 (76)</span></div>
+                <button class="btn-msg" onclick="goTo('chat')">Message</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gab-wrap home-gab">
+            <div class="gab-orb">GAB</div>
+            <div class="gab-bubble">
+              <div class="gab-tag">✨ GAB AI</div>
+              <b>Found the best-priced floral wire!</b> Want me to check seller ratings?
+              <div class="gab-actions">
+                <button class="primary" onclick="goTo('chat')">Check ratings</button>
+                <button class="ghost">Not now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: CHAT -->
+      <section class="screen" id="screen-chat">
+        <div class="chat-header">
+          <div class="back-btn" onclick="goTo('home')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 18l-6-6 6-6"/></svg>
+          </div>
+          <div class="avatar">AN<div class="online"></div></div>
+          <div style="flex:1;">
+            <div class="chat-name">Aling Nena's Floral Supplies
+              <span class="badge-top" style="margin:0;">Top Seller</span>
+            </div>
+            <div class="chat-sub">Online · Usually replies in 5 min</div>
+          </div>
+        </div>
+
+        <div class="chat-scroll">
+          <div>
+            <div class="msg them">Bulk order price for 100 wires: <b>PHP 2,500.</b></div>
+            <div class="msg-time">9:14 AM</div>
+          </div>
+          <div>
+            <div class="msg them">Do you allow pick-up? 🙂</div>
+            <div class="msg-time">9:14 AM</div>
+          </div>
+
+          <div class="gab-suggest">
+            <div class="gab-tag">✨ GAB AI suggests</div>
+            "Yes po, ready by 3pm today. Also — this is ₱150 cheaper than Seller B for the same bundle."
+            <div class="gab-actions">
+              <button class="primary" onclick="useSuggestion()">Use this reply</button>
+              <button class="ghost">Compare prices</button>
+            </div>
+          </div>
+
+          <div id="myReply" style="display:none;">
+            <div class="msg me">Yes po, ready by 3pm today 👍 Let's proceed!</div>
+            <div class="msg-time">9:16 AM</div>
+          </div>
+        </div>
+
+        <div class="chat-input-row">
+          <div class="input-pill">
+            <span style="flex:1;">Type a message…</span>
+            <div class="send-dot">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+            </div>
+          </div>
+          <button class="btn-cta" onclick="goTo('checkout')">
+            Proceed to Payment
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: CHECKOUT -->
+      <section class="screen" id="screen-checkout">
+        <div class="co-header">
+          <div class="back-btn" onclick="goTo('chat')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 18l-6-6 6-6"/></svg>
+          </div>
+          Checkout
+        </div>
+
+        <div class="scroll">
+          <div class="summary-card">
+            <div class="summary-row"><span>100x Fuzzy Floral Wire</span><b>₱2,500.00</b></div>
+            <div class="summary-row"><span>Delivery / Pick-up fee</span><b>₱0.00</b></div>
+            <div class="summary-row"><span>GInsure Transit</span><b id="insureLine">—</b></div>
+            <div class="summary-row total"><span>Total due</span><span id="totalAmt">₱2,500.00</span></div>
+          </div>
+
+          <div class="section-label">Choose payment method</div>
+
+          <div class="pay-option selected" data-pay="wallet" onclick="selectPay(this)">
+            <div class="pay-icon wallet">G</div>
+            <div class="pay-text">
+              <div class="pay-title">GCash Wallet</div>
+              <div class="pay-sub">Balance: ₱8,420.50</div>
+            </div>
+            <div class="radio on"></div>
+          </div>
+
+          <div class="pay-option" data-pay="loan" onclick="selectPay(this)">
+            <div class="pay-icon loan">₱</div>
+            <div class="pay-text">
+              <div class="pay-title">GLoan</div>
+              <div class="pay-sub">For bulk capital · Avail up to ₱50,000</div>
+            </div>
+            <div class="radio"></div>
+          </div>
+
+          <div class="pay-option" data-pay="gives" onclick="selectPay(this)">
+            <div class="pay-icon gives">%</div>
+            <div class="pay-text">
+              <div class="pay-title">GGives</div>
+              <div class="pay-sub">Flexible terms with this supplier</div>
+            </div>
+            <div class="radio"></div>
+          </div>
+
+          <div class="insure-card">
+            <div class="insure-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"/></svg>
+            </div>
+            <div class="pay-text">
+              <div class="pay-title">Protect this delivery — GInsure Transit</div>
+              <div class="pay-sub">Covers loss or damage in transit for ₱10</div>
+            </div>
+            <div class="toggle" id="insureToggle" onclick="toggleInsure()"><div class="toggle-knob"></div></div>
+          </div>
+        </div>
+
+        <div class="chat-input-row" style="border-top:1px solid var(--line);">
+          <button class="btn-cta" onclick="showSuccess()">
+            <span id="payBtnLabel">Pay ₱2,500.00</span>
+          </button>
+        </div>
+
+        <div class="success-overlay" id="successOverlay">
+          <div class="success-card">
+            <div class="check-circle">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <div class="success-title">Order Placed &amp; Protected</div>
+            <div class="success-sub">Ref no. TG-88213 · Aling Nena's Floral Supplies</div>
+            <div class="protected-pill">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"/></svg>
+              Covered by GInsure Transit
+            </div>
+            <button class="success-close" onclick="closeSuccess()">Back to Marketplace</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <button class="nav-item active" data-tab="home" onclick="goTo('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        Discover
+      </button>
+      <button class="nav-item" data-tab="chat" onclick="goTo('chat')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Chat
+      </button>
+      <button class="nav-item" data-tab="checkout" onclick="goTo('checkout')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>
+        Checkout
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const tags = { home:"Frame 1 · Discovery", chat:"Frame 2 · Negotiation", checkout:"Frame 3 · Transaction" };
+
+  function goTo(name){
+    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+    document.getElementById("screen-"+name).classList.add("active");
+    document.querySelectorAll(".nav-item").forEach(b=>b.classList.remove("active"));
+    document.querySelector('.nav-item[data-tab="'+name+'"]').classList.add("active");
+    document.getElementById("frameTag").textContent = tags[name];
+  }
+
+  function useSuggestion(){
+    document.getElementById("myReply").style.display = "block";
+    const scroller = document.querySelector(".chat-scroll");
+    setTimeout(()=> scroller.scrollTo({top: scroller.scrollHeight, behavior:"smooth"}), 50);
+  }
+
+  let insured = false;
+  function toggleInsure(){
+    insured = !insured;
+    document.getElementById("insureToggle").classList.toggle("on", insured);
+    document.getElementById("insureLine").textContent = insured ? "₱10.00" : "—";
+    const total = 2500 + (insured ? 10 : 0);
+    document.getElementById("totalAmt").textContent = "₱" + total.toLocaleString(undefined,{minimumFractionDigits:2});
+    document.getElementById("payBtnLabel").textContent = "Pay ₱" + total.toLocaleString(undefined,{minimumFractionDigits:2});
+  }
+
+  function selectPay(el){
+    document.querySelectorAll(".pay-option").forEach(p=>{ p.classList.remove("selected"); p.querySelector(".radio").classList.remove("on"); });
+    el.classList.add("selected");
+    el.querySelector(".radio").classList.add("on");
+  }
+
+  function showSuccess(){ document.getElementById("successOverlay").classList.add("show"); }
+  function closeSuccess(){
+    document.getElementById("successOverlay").classList.remove("show");
+    goTo("home");
+  }
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(()=>{});
+    });
+  }
+</script>
+</body>
+</html>
