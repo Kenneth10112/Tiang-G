@@ -1,15 +1,15 @@
 :root{
-  /* GCash-inspired palette: deep + bright brand blue, white/pale-blue surfaces, gold accent */
+  /* GCash-inspired monotone blue palette */
   --navy:#001A57;
   --navy-soft:#0E3B93;
   --blue:#0072CE;
   --blue-deep:#001E7A;
   --blue-pale:#EAF3FF;
-  --amber:#FFC72C;
-  --amber-deep:#E29B00;
+  --accent:#3D8BFF;
+  --accent-deep:#0057C7;
   --cream:#F5F8FF;
   --cream-dim:#E8F0FE;
-  --clay:#FF5A45;
+  --muted:#5C7AA6;
   --green:#00A651;
   --green-pale:#E1F6EA;
   --line:#DCE7F9;
@@ -30,7 +30,7 @@ body{
   overscroll-behavior:none;
 }
 
-::selection{background:var(--amber); color:var(--navy);}
+::selection{background:var(--accent); color:var(--navy);}
 
 /* ---------- phone shell (desktop preview only) ---------- */
 .phone{
@@ -82,7 +82,7 @@ body{
 .brandrow{ display:flex; align-items:center; justify-content:space-between; }
 .wordmark{ font-family:'Baloo 2',sans-serif; font-weight:800; font-size:26px; letter-spacing:-0.5px; }
 .w-tiang{ color:var(--navy); }
-.w-g{ color:var(--blue); background:var(--amber); padding:0 6px; border-radius:8px; margin-left:2px; }
+.w-g{ color:var(--blue); background:var(--accent); padding:0 6px; border-radius:8px; margin-left:2px; }
 .pagetitle{ font-family:'Baloo 2',sans-serif; font-weight:700; font-size:20px; color:var(--navy); margin:0; }
 
 .iconbtn{
@@ -204,8 +204,8 @@ body{
 .item-crate{
   height:78px; position:relative;
   background:
-    repeating-linear-gradient(0deg, var(--amber) 0 3px, transparent 3px 20px),
-    repeating-linear-gradient(90deg, var(--amber) 0 3px, transparent 3px 20px),
+    repeating-linear-gradient(0deg, var(--accent) 0 3px, transparent 3px 20px),
+    repeating-linear-gradient(90deg, var(--accent) 0 3px, transparent 3px 20px),
     var(--cream-dim);
   display:flex; align-items:center; justify-content:center;
   font-size:30px;
@@ -213,7 +213,7 @@ body{
 }
 .top-seller-badge{
   position:absolute; top:6px; left:6px;
-  background:var(--navy); color:var(--amber);
+  background:var(--navy); color:var(--accent);
   font-size:9px; font-weight:800; letter-spacing:.03em;
   padding:3px 7px; border-radius:20px;
   display:flex; align-items:center; gap:3px;
@@ -222,7 +222,7 @@ body{
 .item-name{ font-size:13px; font-weight:700; color:var(--navy); line-height:1.25; min-height:33px; }
 .item-meta{ display:flex; align-items:center; justify-content:space-between; }
 .item-seller{ font-size:10.5px; color:#7A8AA3; }
-.item-rating{ font-size:10.5px; color:var(--amber-deep); font-weight:700; }
+.item-rating{ font-size:10.5px; color:var(--accent-deep); font-weight:700; }
 .item-price{ font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:13.5px; color:var(--blue-deep); }
 .item-price small{ font-weight:500; color:#9AA6BB; }
 
@@ -262,12 +262,12 @@ body{
 .bubble-row.me .bubble{ background:var(--blue); color:#fff; border-bottom-right-radius:4px; }
 
 .gabai-suggest{
-  background:#fff; border:1.5px dashed var(--amber-deep); border-radius:var(--radius-md);
+  background:#fff; border:1.5px dashed var(--accent-deep); border-radius:var(--radius-md);
   padding:12px 13px; display:flex; gap:9px; animation:pop .3s ease;
 }
 .gabai-suggest .gabai-avatar{ margin-top:1px; }
 .gabai-suggest-body{ flex:1; }
-.gabai-suggest-label{ margin:0; font-size:10px; font-weight:800; letter-spacing:.05em; color:var(--amber-deep); text-transform:uppercase; }
+.gabai-suggest-label{ margin:0; font-size:10px; font-weight:800; letter-spacing:.05em; color:var(--accent-deep); text-transform:uppercase; }
 .gabai-suggest-text{ margin:4px 0 10px; font-size:13px; color:var(--navy-soft); line-height:1.4; font-style:italic; }
 .gabai-suggest-actions{ display:flex; gap:8px; }
 .gabai-btn{
@@ -283,11 +283,11 @@ body{
 @keyframes bounce{ 0%,60%,100%{ transform:translateY(0); opacity:.5; } 30%{ transform:translateY(-4px); opacity:1; } }
 
 .offer-card{
-  background:#fff; border:1.5px solid var(--amber); border-radius:var(--radius-md);
+  background:#fff; border:1.5px solid var(--accent); border-radius:var(--radius-md);
   padding:13px; width:88%; cursor:pointer; animation:pop .3s ease;
   box-shadow:var(--shadow);
 }
-.offer-card-eyebrow{ font-size:10px; font-weight:800; color:var(--amber-deep); letter-spacing:.05em; text-transform:uppercase; margin:0 0 6px; }
+.offer-card-eyebrow{ font-size:10px; font-weight:800; color:var(--accent-deep); letter-spacing:.05em; text-transform:uppercase; margin:0 0 6px; }
 .offer-card-item{ font-size:14px; font-weight:700; color:var(--navy); margin:0; }
 .offer-card-row{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
 .offer-card-price{ font-family:'IBM Plex Mono',monospace; font-weight:700; color:var(--blue-deep); font-size:15px; }
@@ -331,8 +331,8 @@ body{
   font-weight:800; font-size:15px; color:#fff;
 }
 .pay-gcash{ background:var(--blue); }
-.pay-loan{ background:var(--amber-deep); }
-.pay-gives{ background:var(--clay); }
+.pay-loan{ background:var(--accent-deep); }
+.pay-gives{ background:var(--muted); }
 .pay-copy{ flex:1; display:flex; flex-direction:column; }
 .pay-copy strong{ font-size:13.5px; color:var(--navy); }
 .pay-copy small{ font-size:11px; color:#7A8AA3; margin-top:1px; }
@@ -390,7 +390,7 @@ body{
 .activity-title{ margin:0; font-size:13px; font-weight:700; color:var(--navy); }
 .activity-sub{ margin:1px 0 0; font-size:11px; color:#9AA6BB; }
 .activity-amt{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:600; }
-.activity-amt.neg{ color:var(--clay); }
+.activity-amt.neg{ color:var(--muted); }
 .activity-amt.pos{ color:var(--green); }
 
 /* ---------- BOTTOM NAV ---------- */
