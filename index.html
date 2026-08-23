@@ -110,7 +110,7 @@
         <div class="paymethods" id="paymethods">
           <label class="paymethod selected" data-pay="wallet">
             <input type="radio" name="pay" checked />
-            <img src="icons/GGives.png" class="pay-icon" alt="GGives" style="background: transparent;" />
+            <img src="icons/Wallet.png" class="pay-icon" alt="GCash Wallet" />
             <span class="pay-copy">
               <strong>GCash Wallet</strong>
               <small>Balance ₱8,450.00</small>
@@ -128,7 +128,7 @@
           </label>
           <label class="paymethod" data-pay="ggives">
             <input type="radio" name="pay" />
-            <span class="pay-icon pay-gives">%</span>
+            <img src="icons/GGives.png" class="pay-icon" alt="GGives" />
             <span class="pay-copy">
               <strong>GGives</strong>
               <small>Flexible supplier payment terms</small>
@@ -140,8 +140,7 @@
         <div class="insure-card">
           <div class="insure-copy">
             <p class="insure-title">
-                <img src="icons/GInsure.png" alt="GInsure" width="18" height="18" style="vertical-align: text-bottom; margin-right: 4px;" /> 
-                GInsure Transit
+              <img src="icons/GInsure.png" alt="GInsure" width="18" height="18" style="vertical-align: text-bottom; margin-right: 4px;" /> GInsure Transit
             </p>
             <p class="insure-sub">Protect this delivery for ₱10</p>
           </div>
@@ -175,10 +174,22 @@
           <p class="balance-label">GCash Balance</p>
           <p class="balance-amount">₱8,450.00</p>
           <div class="balance-actions">
-            <div class="balance-action">💵<span>Cash In</span></div>
-            <div class="balance-action">📤<span>Send</span></div>
-            <div class="balance-action">🏦<span>GLoan</span></div>
-            <div class="balance-action">🛡️<span>GInsure</span></div>
+            <div class="balance-action">
+              <img src="icons/Wallet.png" alt="Cash In" width="26" height="26" />
+              <span>Cash In</span>
+            </div>
+            <div class="balance-action">
+              <span style="font-size: 20px;">📤</span>
+              <span>Send</span>
+            </div>
+            <div class="balance-action">
+              <img src="icons/GGives.png" alt="GGives" width="26" height="26" />
+              <span>GGives</span>
+            </div>
+            <div class="balance-action">
+              <img src="icons/GInsure.png" alt="GInsure" width="26" height="26" />
+              <span>GInsure</span>
+            </div>
           </div>
         </div>
 
@@ -206,12 +217,13 @@
   <!-- ============ BOTTOM NAV ============ -->
   <nav class="bottomnav" id="bottomnav">
     <button class="navitem active" data-target="bagsakan">
-      <img src="icons/Bagsakan.png" class="navicon" alt="Bagsakan" width="24" height="24" />
-      <span>Bagsakan</span>
+      <img src="icons/Bagsakan.png" class="navicon" alt="Bagsakan" width="24" height="24" /><span>Bagsakan</span>
     </button>
     <button class="navitem" data-target="wallet">
-      <img src="icons/Wallet.png" class="navicon" alt="Wallet" width="24" height="24" />
-      <span>Wallet</span>
+      <img src="icons/Wallet.png" class="navicon" alt="Wallet" width="24" height="24" /><span>Wallet</span>
+    </button>
+    <button class="navitem" data-target="chat">
+      <span class="navicon">💬</span><span>Chat</span>
     </button>
   </nav>
 
