@@ -215,7 +215,9 @@
     wrap.className = "gabai-suggest";
     wrap.id = "gabai-suggest-box";
     wrap.innerHTML = `
-      <div class="gabai-avatar">G</div>
+      <div class="gabai-avatar">
+        <img src="icons/GABAI.png" alt="GAB AI" style="width: 100%; height: 100%; border-radius: 9px;" />
+      </div>
       <div class="gabai-suggest-body">
         <p class="gabai-suggest-label">GAB AI suggests</p>
         <p class="gabai-suggest-text">"Hi po! Interested in bulk ${item.name} for my flower shop — do you have a price for 100 rolls, and is pick-up available?"</p>
